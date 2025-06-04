@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Infosys Springboard - Certificate Verification</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      text-align: center;
+      padding: 30px 10px 10px 10px;
+    }
+    header h1 {
+      color: #0070c0;
+      font-weight: bold;
+      margin: 0;
+      font-size: 2.5em;
+    }
+    header p {
+      margin: 5px 0 20px 0;
+      font-style: italic;
+      color: #333;
+      font-size: 1.2em;
+    }
+    .container {
+      max-width: 450px;
+      margin: auto;
+      background: white;
+      padding: 30px 20px 50px 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+    .input-wrapper {
+      margin-bottom: 20px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      font-size: 1em;
+      border-radius: 6px;
+      border: 1.5px solid #0070c0;
+    }
+    button {
+      background-color: #0070c0;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 1em;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #005a8f;
+    }
+    .result {
+      margin-top: 25px;
+      font-weight: bold;
+      font-size: 1.1em;
+      color: #333;
+      min-height: 80px;
+    }
+    #dateDisplay {
+      margin-top: 20px;
+      background-color: #0070c0;
+      color: white;
+      padding: 15px 25px;
+      border-radius: 10px;
+      font-size: 1.3em;
+      font-weight: 600;
+      text-align: center;
+      display: none;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+    #springboardLogo {
+      display: none;
+      margin: 20px auto 0 auto;
+      max-width: 80%;
+      height: auto;
+    }
+    #appreciationMessage {
+      margin-top: 25px;
+      font-weight: bold;
+      font-size: 1.2em;
+      color: #0070c0;
+      text-align: center;
+      white-space: normal;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Infosys Springboard</h1>
+    <p>Navigate Your Next</p>
+  </header>
+
+  <div class="container">
+    <div class="input-wrapper">
+      <input type="text" id="certId" placeholder="Enter Certificate ID e.g., CERT-2025-1234" />
+    </div>
+    <button onclick="verifyCertificate()">Verify</button>
+
+    <div class="result" id="result"></div>
+    <div id="dateDisplay"></div>
+    <img id="springboardLogo" src="springboard-logo x.jpg" alt="Springboard Logo" />
+    <div id="appreciationMessage"></div>
+  </div>
+
+  <script>
+    let appreciationTimeout;
+    let charIndex = 0;
+    let typingInterval;
+
+    const appreciationText =
+      "We appreciate your successful completion of the internship. Your dedication and effort are commendable. Best wishes for your future endeavors.";
+
+    function typeAppreciationMessage() {
+      const msgDiv = document.getElementById('appreciationMessage');
+      if (charIndex < appreciationText.length) {
+        msgDiv.textContent += appreciationText.charAt(charIndex);
+        charIndex++;
+      } else {
+        clearInterval(typingInterval);
+      }
+    }
+
+    function verifyCertificate() {
+      clearTimeout(appreciationTimeout);
+      clearInterval(typingInterval);
+      charIndex = 0;
+
+      const certId = document.getElementById('certId').value.trim();
+      const resultDiv = document.getElementById('result');
+      const dateDisplay = document.getElementById('dateDisplay');
+      const appreciationMessage = document.getElementById('appreciationMessage');
+      const springboardLogo = document.getElementById('springboardLogo');
+
+      appreciationMessage.style.display = "none";
+      appreciationMessage.textContent = "";
+      springboardLogo.style.display = "none";
+
+      const certificates = {
+        "CERT-2025-1234": {
+          name: "Rahul Sharma",
+          course: "Web Development",
+          startDate: "01 June 2025",
+          endDate: "31 June 2025"
+        },
+        "CERT-2025-5678": {
+          name: "Anjali Verma",
+          course: "Graphic Design",
+          startDate: "05 June 2025",
+          endDate: "30 June 2025"
+        }
+      };
+
+      const cert = certificates[certId];
+
+      if (cert) {
+        resultDiv.style.color = "green";
+        resultDiv.innerHTML = `
+          ✅ <b>Valid Certificate</b><br>
+          <b>Name:</b> ${cert.name}<br>
+          <b>Course:</b> ${cert.course}
+        `;
+        dateDisplay.style.display = "block";
+        dateDisplay.textContent = `Course Duration: ${cert.startDate} to ${cert.endDate}`;
+        springboardLogo.style.display = "block";
+
+        appreciationTimeout = setTimeout(() => {
+          appreciationMessage.style.display = "block";
+          typingInterval = setInterval(typeAppreciationMessage, 50);
+        }, 5000);
+      } else {
+        resultDiv.style.color = "red";
+        resultDiv.textContent = "❌ Invalid Certificate ID";
+        dateDisplay.style.display = "none";
+        appreciationMessage.style.display = "none";
+        springboardLogo.style.display = "none";
+      }
+    }
+  </script>
+</body>
+</html>
